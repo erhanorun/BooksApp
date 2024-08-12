@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1")
-@RequiredArgsConstructor
 public class BooksController {
 
     private final BooksRepository booksRepository;
+
+    public BooksController(BooksRepository booksRepository) {
+        this.booksRepository = booksRepository;
+    }
 
     @PostMapping("/books")
     public ResponseEntity<Books> createBooks(@RequestBody Books books) {

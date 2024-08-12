@@ -2,7 +2,9 @@ package com.bookstore.backend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -10,7 +12,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@RequiredArgsConstructor
 @Table(name = "books")
 public class Books {
 
@@ -41,15 +42,4 @@ public class Books {
     @Column(name = "deleted_at")
     @CreationTimestamp
     private Date deleted_at;
-
-    public Books(String title, String author, String publisher, int page_count, Date created_at, Date updated_at, Date deleted_at) {
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
-        this.page_count = page_count;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.deleted_at = deleted_at;
-    }
-
 }
