@@ -15,13 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BooksController {
 
-//    private final BooksService booksService;
     private final BooksRepository booksRepository;
-
-//    @PostMapping("/books")
-//    public Books createBooks(@RequestBody Books books) {
-//        return booksService.save(books);
-//    }
 
     @PostMapping("/books")
     public ResponseEntity<Books> createBooks(@RequestBody Books books) {
