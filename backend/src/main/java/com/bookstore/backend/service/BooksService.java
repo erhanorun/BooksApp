@@ -23,8 +23,8 @@ public class BooksService {
         return booksRepository.findAll();
     }
 
-    public Books getBookById(Long bookId) {
-        return booksRepository.findById(bookId).orElse(null);
+    public Books getBookById(Integer id) {
+        return booksRepository.findById(id).orElse(null);
     }
 
     public Books addBook(BooksRequests newBookRequest) {
@@ -38,8 +38,8 @@ public class BooksService {
         return booksRepository.save(toSave);
     }
 
-    public Optional<Books> updateBookById(Long bookId, BooksRequests updateBook) {
-        Optional<Books> book = booksRepository.findById(bookId);
+    public Optional<Books> updateBookById(Integer id, BooksRequests updateBook) {
+        Optional<Books> book = booksRepository.findById(id);
         if(book.isPresent()) {
             Books toUpdate = book.get();
             toUpdate.setTitle(updateBook.getTitle());
@@ -47,11 +47,9 @@ public class BooksService {
             toUpdate.setPublisher(updateBook.getPublisher());
             toUpdate.setPage_count(updateBook.getPage_count());
             toUpdate.setUpdated_at(new Date());
-//            booksRepository.save(toUpdate);
             return Optional.of(booksRepository.save(toUpdate));
         } else {
             return Optional.empty();
         }
     }
-
 }

@@ -23,13 +23,13 @@ public class BooksController {
     }
 
     @PutMapping("/updateBook/{id}")
-    public Optional<Books> updateBook(@PathVariable Long bookId, @RequestBody BooksRequests updateBook) {
-        return booksService.updateBookById(bookId, updateBook);
+    public Optional<Books> updateBook(@PathVariable Integer id, @RequestBody BooksRequests updateBook) {
+        return booksService.updateBookById(id, updateBook);
     }
 
     @GetMapping("/books/{id}")
-    public Books getBook(@PathVariable Long bookId) {
-        return booksService.getBookById(bookId);
+    public Books getBook(@PathVariable Integer id) {
+        return booksService.getBookById(id);
     }
 
     @GetMapping("/books/all")

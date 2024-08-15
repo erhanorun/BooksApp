@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BooksRequests {
 
-    Long id;
+    Integer id;
     String title;
     String author;
     String publisher;

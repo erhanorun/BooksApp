@@ -4,7 +4,7 @@ import com.bookstore.backend.entity.Books;
 
 public class BooksResponse {
 
-    Long id;
+    Integer id;
     String title;
     String author;
     String publisher;
