@@ -1,40 +1,40 @@
 package com.bookstore.backend.controller;
 
 import com.bookstore.backend.entity.Books;
-import com.bookstore.backend.repository.BooksRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.bookstore.backend.requests.BooksRequests;
+import com.bookstore.backend.service.BooksService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
 public class BooksController {
 
-    private final BooksRepository booksRepository;
+    private final BooksService booksService;
 
-    public BooksController(BooksRepository booksRepository) {
-        this.booksRepository = booksRepository;
+    public BooksController(BooksService booksService) {
+        this.booksService = booksService;
     }
 
-    @PostMapping("/books")
-    public ResponseEntity<Books> createBooks(@RequestBody Books books) {
-        try {
-            Books _books = new Books();
-            _books.setTitle(books.getTitle());
-            _books.setAuthor(books.getAuthor());
-            _books.setPublisher(books.getPublisher());
-            _books.setPage_count(books.getPage_count());
-            _books.setCreated_at(books.getCreated_at());
-
-            Books savedBooks = booksRepository.save(_books);
-
-            return new ResponseEntity<>(savedBooks, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/addBook")
+    public Books createBook(@RequestBody BooksRequests newBookRequest) {
+        return booksService.addBook(newBookRequest);
     }
+
+    @PutMapping("/updateBook/{id}")
+    public Optional<Books> updateBook(@PathVariable Long bookId, @RequestBody BooksRequests updateBook) {
+        return booksService.updateBookById(bookId, updateBook);
+    }
+
+    @GetMapping("/books/{id}")
+    public Books getBook(@PathVariable Long bookId) {
+        return booksService.getBookById(bookId);
+    }
+
+    @GetMapping("/books/all")
+    public Iterable<Books> getAllBooks() {
+        return booksService.getAllBooks();
+    }
+
 }
