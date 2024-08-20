@@ -22,11 +22,6 @@ public class BooksController {
         return booksService.addBook(newBookRequest);
     }
 
-    @PutMapping("/updateBook/{id}")
-    public Optional<Books> updateBook(@PathVariable Integer id, @RequestBody BooksRequests updateBook) {
-        return booksService.updateBookById(id, updateBook);
-    }
-
     @GetMapping("/books/{id}")
     public Books getBook(@PathVariable Integer id) {
         return booksService.getBookById(id);
@@ -37,4 +32,18 @@ public class BooksController {
         return booksService.getAllBooks();
     }
 
+    @PutMapping("/updateBook/{id}")
+    public Optional<Books> updateBook(@PathVariable Integer id, @RequestBody BooksRequests updateBook) {
+        return booksService.updateBookById(id, updateBook);
+    }
+
+    @DeleteMapping("/deleteBook/{id}")
+    public void deleteBook(@PathVariable Integer id) {
+        booksService.deleteBookById(id);
+    }
+
+    @DeleteMapping("/deleteBooks/all")
+    public void deleteBooksAll() {
+        booksService.deleteBooksAll();
+    }
 }

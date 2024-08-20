@@ -19,14 +19,6 @@ public class BooksService {
         this.booksRepository = booksRepository;
     }
 
-    public Iterable<Books> getAllBooks() {
-        return booksRepository.findAll();
-    }
-
-    public Books getBookById(Integer id) {
-        return booksRepository.findById(id).orElse(null);
-    }
-
     public Books addBook(BooksRequests newBookRequest) {
         Books toSave = new Books();
         toSave.setId(newBookRequest.getId());
@@ -36,6 +28,14 @@ public class BooksService {
         toSave.setPage_count(newBookRequest.getPage_count());
         toSave.setCreated_at(new Date());
         return booksRepository.save(toSave);
+    }
+
+    public Iterable<Books> getAllBooks() {
+        return booksRepository.findAll();
+    }
+
+    public Books getBookById(Integer id) {
+        return booksRepository.findById(id).orElse(null);
     }
 
     public Optional<Books> updateBookById(Integer id, BooksRequests updateBook) {
@@ -52,4 +52,20 @@ public class BooksService {
             return Optional.empty();
         }
     }
+
+    public Optional<Books> deleteBookById(Integer id) {
+        Optional<Books> book = booksRepository.findById(id);
+        if(book.isPresent()) {
+            Books toDelete = book.get();
+            toDelete.setDeleted_at(new Date());
+            return Optional.of(booksRepository.save(toDelete));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public void deleteBooksAll() {
+        booksRepository.deleteAll();
+    }
+
 }
