@@ -3,6 +3,7 @@ package com.bookstore.backend.controller;
 import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.requests.BooksRequests;
 import com.bookstore.backend.service.BooksService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class BooksController {
     }
 
     @PostMapping("/addBook")
-    public Books createBook(@RequestBody BooksRequests newBookRequest) {
+    public Books createBook(@Valid @RequestBody BooksRequests newBookRequest) {
         return booksService.addBook(newBookRequest);
     }
 
@@ -33,12 +34,12 @@ public class BooksController {
     }
 
     @PutMapping("/updateBook/{id}")
-    public Optional<Books> updateBook(@PathVariable Integer id, @RequestBody BooksRequests updateBook) {
+    public Optional<Books> updateBook(@Valid @PathVariable Integer id, @RequestBody BooksRequests updateBook) {
         return booksService.updateBookById(id, updateBook);
     }
 
     @DeleteMapping("/deleteBook/{id}")
-    public void deleteBook(@PathVariable Integer id) {
+    public void deleteBook(@Valid @PathVariable Integer id) {
         booksService.deleteBookById(id);
     }
 

@@ -2,6 +2,7 @@ package com.bookstore.backend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,15 +21,19 @@ public class Books {
     private Integer id;
 
     @Column(name = "title")
+    @NotNull(message = "title must not be null")
     private String title;
 
     @Column(name = "author")
+    @NotNull(message = "author must not be null")
     private String author;
 
     @Column(name= "publisher")
+    @NotNull(message = "publisher must not be null")
     private String publisher;
 
     @Column(name = "page_count")
+    @NotNull
     private int page_count;
 
     @Column(name = "created_at")
