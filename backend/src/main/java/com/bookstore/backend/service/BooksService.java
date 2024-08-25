@@ -4,13 +4,16 @@ import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.repository.BooksRepository;
 import com.bookstore.backend.requests.BooksRequests;
 import com.bookstore.backend.response.BooksResponse;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Validated
 public class BooksService {
 
     private final BooksRepository booksRepository;
@@ -19,7 +22,7 @@ public class BooksService {
         this.booksRepository = booksRepository;
     }
 
-    public Books addBook(BooksRequests newBookRequest) {
+    public Books addBook(@Valid BooksRequests newBookRequest) {
         Books toSave = new Books();
         toSave.setId(newBookRequest.getId());
         toSave.setTitle(newBookRequest.getTitle());
@@ -38,7 +41,7 @@ public class BooksService {
         return booksRepository.findById(id).orElse(null);
     }
 
-    public Optional<Books> updateBookById(Integer id, BooksRequests updateBook) {
+    public Optional<Books> updateBookById(@Valid Integer id, BooksRequests updateBook) {
         Optional<Books> book = booksRepository.findById(id);
         if(book.isPresent()) {
             Books toUpdate = book.get();

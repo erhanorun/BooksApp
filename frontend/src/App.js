@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import Book from './components/books/Book.jsx';
+import Button from './components/books/AddBook.jsx';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           Learn React
         </a>
       </header>
+      <Book />
+      <Button />
     </div>
   );
 }

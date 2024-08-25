@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 function Books() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [booksList, setBookslist] = useState([]);
+    const [booksList, setBooksList] = useState([]);
 
     useEffect(() => {
         fetch("/v1/books/all")
@@ -12,7 +12,8 @@ function Books() {
         .then(
             (result) => {
                 setIsLoaded(true);
-                setBookslist(result)
+                console.log(result);
+                setBooksList(result)
             },
             (error) => {
                 setIsLoaded(true);
@@ -26,7 +27,8 @@ function Books() {
     } else if(!isLoaded) {
         return <div> Loading... </div>;
     } else {
-        <ul>
+        return <ul
+        style={{height: 20}}>
             {booksList.map(books => (
                 <li>
                     {books.title} {books.author} {books.publisher} {books.page_count}

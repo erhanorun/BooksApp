@@ -4,12 +4,14 @@ import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.requests.BooksRequests;
 import com.bookstore.backend.service.BooksService;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
+@Validated
 public class BooksController {
 
     private final BooksService booksService;
@@ -28,7 +30,7 @@ public class BooksController {
         return booksService.getBookById(id);
     }
 
-    @GetMapping("/books/all")
+    @GetMapping("/books")
     public Iterable<Books> getAllBooks() {
         return booksService.getAllBooks();
     }
@@ -43,7 +45,7 @@ public class BooksController {
         booksService.deleteBookById(id);
     }
 
-    @DeleteMapping("/deleteBooks/all")
+    @DeleteMapping("/deleteBooks")
     public void deleteBooksAll() {
         booksService.deleteBooksAll();
     }
