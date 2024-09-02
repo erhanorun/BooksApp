@@ -21,6 +21,7 @@ public class BooksController {
     }
 
     @PostMapping("/addBook")
+    @Validated
     public Books createBook(@Valid @RequestBody BooksRequests newBookRequest) {
         return booksService.addBook(newBookRequest);
     }
@@ -36,6 +37,7 @@ public class BooksController {
     }
 
     @PutMapping("/updateBook/{id}")
+    @Validated
     public Optional<Books> updateBook(@Valid @PathVariable Integer id, @RequestBody BooksRequests updateBook) {
         return booksService.updateBookById(id, updateBook);
     }

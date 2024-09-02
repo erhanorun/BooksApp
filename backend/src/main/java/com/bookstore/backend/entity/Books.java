@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.Date;
 
@@ -21,19 +22,27 @@ public class Books {
     private Integer id;
 
     @Column(name = "title")
-    @NotNull(message = "title must not be null")
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String title;
 
     @Column(name = "author")
-    @NotNull(message = "author must not be null")
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String author;
 
     @Column(name= "publisher")
-    @NotNull(message = "publisher must not be null")
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String publisher;
 
     @Column(name = "page_count")
     @NotNull
+    @Positive
+    @Range(min = 0, max = 10000)
     private int page_count;
 
     @Column(name = "created_at")
