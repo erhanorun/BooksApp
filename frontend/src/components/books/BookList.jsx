@@ -25,9 +25,10 @@ const BookList = ({ onDelete }) => {
             <ul>
                 {books.map((book) => (
                     <li key={book.id}>
+                        Book ID: <strong> {book.id} </strong> <br />
                         <strong>{book.title}</strong> by {book.author} <br />
                         Publisher: {book.publisher} <br />
-                        <strong>Page Count: {book.pageCount}</strong>
+                        <strong>Page Count: {book.page_count} </strong> <br />
                         <button onClick={() => handleDelete(book.id)}>Delete</button>
                     </li>
                 ))}

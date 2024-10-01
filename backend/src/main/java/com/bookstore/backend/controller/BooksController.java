@@ -12,7 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1")
 @Validated
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3001")
 public class BooksController {
 
     private final BooksService booksService;
