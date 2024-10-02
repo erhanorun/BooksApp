@@ -28,7 +28,7 @@ public class BooksService {
         toSave.setTitle(newBookRequest.getTitle());
         toSave.setAuthor(newBookRequest.getAuthor());
         toSave.setPublisher(newBookRequest.getPublisher());
-        toSave.setPage_count(newBookRequest.getPage_count());
+        toSave.setPageCount(newBookRequest.getPageCount());
         toSave.setCreated_at(new Date());
         return booksRepository.save(toSave);
     }
@@ -48,7 +48,7 @@ public class BooksService {
             toUpdate.setTitle(updateBook.getTitle());
             toUpdate.setAuthor(updateBook.getAuthor());
             toUpdate.setPublisher(updateBook.getPublisher());
-            toUpdate.setPage_count(updateBook.getPage_count());
+            toUpdate.setPageCount(updateBook.getPageCount());
             toUpdate.setUpdated_at(new Date());
             return Optional.of(booksRepository.save(toUpdate));
         } else {

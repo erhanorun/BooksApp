@@ -7,16 +7,21 @@ const BookForm = ({ onAdd }) => {
     const [publisher, setPublisher] = useState('');
     const [pageCount, setPageCount] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const newBook = { title, author, publisher, pageCount };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newBook = { title, author, publisher, pageCount }; // Ensure pageCount is an integer
+    try {
         await axios.post('http://localhost:8080/v1/addBook', newBook);
         onAdd();
         setTitle('');
         setAuthor('');
         setPublisher('');
         setPageCount('');
-    };
+    } catch (error) {
+        console.error('There was an error adding the book:', error);
+    }
+};
+
 
     return (
         <form onSubmit={handleSubmit}>

@@ -39,11 +39,11 @@ public class Books {
     @NotBlank
     private String publisher;
 
-    @Column(name = "page_count")
+    @Column(name = "pageCount")
     @NotNull
     @Positive
     @Range(min = 0, max = 10000)
-    private int page_count;
+    private int pageCount;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)

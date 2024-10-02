@@ -31,7 +31,7 @@ function Books() {
         style={{height: 20}}>
             {booksList.map(books => (
                 <li>
-                    {books.title} {books.author} {books.publisher} {books.page_count}
+                    {books.title} {books.author} {books.publisher} {books.pageCount}
                 </li>
             ))}
         </ul>

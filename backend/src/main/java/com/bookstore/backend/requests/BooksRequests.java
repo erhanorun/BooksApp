@@ -9,6 +9,6 @@ public class BooksRequests {
     String title;
     String author;
     String publisher;
-    int page_count;
+    int pageCount;
 
 }

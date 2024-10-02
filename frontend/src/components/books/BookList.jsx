@@ -28,7 +28,7 @@ const BookList = ({ onDelete }) => {
                         Book ID: <strong> {book.id} </strong> <br />
                         <strong>{book.title}</strong> by {book.author} <br />
                         Publisher: {book.publisher} <br />
-                        <strong>Page Count: {book.page_count} </strong> <br />
+                        <strong>Page Count: {book.pageCount} </strong> <br />
                         <button onClick={() => handleDelete(book.id)}>Delete</button>
                     </li>
                 ))}

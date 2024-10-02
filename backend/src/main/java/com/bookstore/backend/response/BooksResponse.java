@@ -8,13 +8,13 @@ public class BooksResponse {
     String title;
     String author;
     String publisher;
-    int page_count;
+    int pageCount;
 
     public BooksResponse(Books entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.author = entity.getAuthor();
         this.publisher = entity.getPublisher();
-        this.page_count = entity.getPage_count();
+        this.pageCount = entity.getPageCount();
     }
 }
