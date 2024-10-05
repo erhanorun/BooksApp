@@ -42,7 +42,7 @@ public class Books {
     @Column(name = "pageCount")
     @NotNull
     @Positive
-    @Range(min = 0, max = 10000)
+    @Range(min = 0, max = 100000)
     private int pageCount;
 
     @Column(name = "created_at")
