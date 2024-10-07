@@ -1,6 +1,7 @@
 package com.bookstore.backend.exceptions;
 
 import com.bookstore.backend.response.ErrorResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -9,41 +10,45 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
+//@RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<?> handleNullPointerException(Exception e){
+    public ResponseEntity<?> handleNullPointerException(Exception e) {
         ErrorResponse error = ErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage()).build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException(Exception e){
+    public ResponseEntity<?> handleIllegalArgumentException(Exception e) {
         ErrorResponse error = ErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage()).build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<?> handleMissingParameterException(Exception e){
+    public ResponseEntity<?> handleMissingParameterException(Exception e) {
         ErrorResponse error = ErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
                 .message(e.getMessage()).build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         Map<String, String> error = new LinkedHashMap<>();
         allErrors.forEach(er -> {
             String message = er.getDefaultMessage();
-            String field = ((FieldError)(er)).getField();
+            String field = ((FieldError) (er)).getField();
             error.put(field, message);
         });
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -56,7 +61,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
-        return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+//    private Map<String, List<String>> getErrorsMap(List<String> errors) {
+//        Map<String, List<String>> errorResponse = new HashMap<>();
+//        errorResponse.put("errors", errors);
+//        return errorResponse;
+//    }
+//
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
+//        List<String> errors = ex.getBindingResult().getFieldErrors()
+//                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
+//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+//    }
+
 
 }

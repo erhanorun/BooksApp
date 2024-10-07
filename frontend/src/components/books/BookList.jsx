@@ -15,7 +15,7 @@ const BookList = ({ onDelete }) => {
 
     const handleDelete = async (id) => {
         await axios.delete(`http://localhost:8080/v1/deleteBook/${id}`);
-        onDelete();
+
         fetchBooks();
     };
 
