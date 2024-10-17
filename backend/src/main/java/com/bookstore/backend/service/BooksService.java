@@ -1,6 +1,7 @@
 package com.bookstore.backend.service;
 
 import com.bookstore.backend.entity.Books;
+import com.bookstore.backend.exceptions.ResourceAlreadyExistsException;
 import com.bookstore.backend.repository.BooksRepository;
 import com.bookstore.backend.requests.BooksRequests;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class BooksService {
         toSave.setCreated_at(new Date());
         boolean bookExists = booksRepository.existsByTitleAndAuthor(newBookRequest.getTitle(), newBookRequest.getAuthor());
         if (bookExists) {
-            throw new ResourceAlreadyExistsException("Book with the same title and author already exists.");
+            throw new ResourceAlreadyExistsException("Book with the same title or author already exists.");
         }
         return booksRepository.save(toSave);
     }
