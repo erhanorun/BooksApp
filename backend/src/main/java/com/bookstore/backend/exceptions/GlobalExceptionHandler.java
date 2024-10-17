@@ -13,44 +13,33 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 //@RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException {
 
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<?> handleNullPointerException(Exception e) {
-        ErrorResponse error = ErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(e.getMessage()).build();
+        ErrorResponse error = ErrorResponse.builder().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(e.getMessage()).timestamp(LocalDateTime.now()).build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(Exception e) {
-        ErrorResponse error = ErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(e.getMessage()).build();
+        ErrorResponse error = ErrorResponse.builder().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(e.getMessage()).timestamp(LocalDateTime.now()).build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> handleMissingParameterException(Exception e) {
-        ErrorResponse error = ErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
-                .message(e.getMessage()).build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
-        Map<String, String> error = new LinkedHashMap<>();
-        allErrors.forEach(er -> {
-            String message = er.getDefaultMessage();
-            String field = ((FieldError) (er)).getField();
-            error.put(field, message);
-        });
+        ErrorResponse error = ErrorResponse.builder().statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage()).timestamp(LocalDateTime.now()).build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -64,18 +53,26 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    private Map<String, List<String>> getErrorsMap(List<String> errors) {
-//        Map<String, List<String>> errorResponse = new HashMap<>();
-//        errorResponse.put("errors", errors);
-//        return errorResponse;
-//    }
-//
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
-//        List<String> errors = ex.getBindingResult().getFieldErrors()
-//                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
-//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-//    }
+    private Map<String, List<String>> getErrorsMap(List<String> errors) {
+        Map<String, List<String>> errorResponse = new HashMap<>();
+        errorResponse.put("errors", errors);
+        return errorResponse;
+    }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult().getFieldErrors()
+                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
+        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
 }

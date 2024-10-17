@@ -3,13 +3,11 @@ package com.bookstore.backend.service;
 import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.repository.BooksRepository;
 import com.bookstore.backend.requests.BooksRequests;
-import com.bookstore.backend.response.BooksResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +28,10 @@ public class BooksService {
         toSave.setPublisher(newBookRequest.getPublisher());
         toSave.setPageCount(newBookRequest.getPageCount());
         toSave.setCreated_at(new Date());
+        boolean bookExists = booksRepository.existsByTitleAndAuthor(newBookRequest.getTitle(), newBookRequest.getAuthor());
+        if (bookExists) {
+            throw new ResourceAlreadyExistsException("Book with the same title and author already exists.");
+        }
         return booksRepository.save(toSave);
     }
 
