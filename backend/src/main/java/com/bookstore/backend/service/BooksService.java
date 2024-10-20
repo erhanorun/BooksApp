@@ -2,6 +2,7 @@ package com.bookstore.backend.service;
 
 import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.exceptions.ResourceAlreadyExistsException;
+import com.bookstore.backend.exceptions.ResourceNotFoundException;
 import com.bookstore.backend.repository.BooksRepository;
 import com.bookstore.backend.requests.BooksRequests;
 import jakarta.validation.Valid;
@@ -41,7 +42,8 @@ public class BooksService {
     }
 
     public Books getBookById(Integer id) {
-        return booksRepository.findById(id).orElse(null);
+        return booksRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No user by ID: " + id));
     }
 
     public Optional<Books> updateBookById(@Valid Integer id, BooksRequests updateBook) {
