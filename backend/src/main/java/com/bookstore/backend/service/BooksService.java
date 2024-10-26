@@ -30,9 +30,9 @@ public class BooksService {
         toSave.setPublisher(newBookRequest.getPublisher());
         toSave.setPageCount(newBookRequest.getPageCount());
         toSave.setCreated_at(new Date());
-        boolean bookExists = booksRepository.existsByTitleAndAuthor(newBookRequest.getTitle(), newBookRequest.getAuthor());
-        if (bookExists) {
-            throw new ResourceAlreadyExistsException("Book with the same title or author already exists.");
+        boolean bookTitle = booksRepository.existsByTitle(newBookRequest.getTitle());
+        if (bookTitle) {
+            throw new ResourceAlreadyExistsException("Book with the SAME TITLE already exists.");
         }
         return booksRepository.save(toSave);
     }
