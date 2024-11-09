@@ -10,7 +10,8 @@ const BookList = ({ onDelete }) => {
 
     const fetchBooks = async () => {
         const result = await axios.get('http://localhost:8080/v1/books');
-        setBooks(result.data);
+        console.log(result);
+        setBooks(result.data.content);
     };
 
     const handleDelete = async (id) => {

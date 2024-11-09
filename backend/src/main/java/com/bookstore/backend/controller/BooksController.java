@@ -4,10 +4,12 @@ import com.bookstore.backend.entity.Books;
 import com.bookstore.backend.requests.BooksRequests;
 import com.bookstore.backend.service.BooksService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -23,7 +25,7 @@ public class BooksController {
 
     @PostMapping("/books")
     @Validated
-    public Books createBook(@Valid @RequestBody BooksRequests newBookRequest) {
+    public Books createBook(@RequestBody @Valid BooksRequests newBookRequest) {
         return booksService.addBook(newBookRequest);
     }
 
@@ -33,14 +35,21 @@ public class BooksController {
     }
 
     @GetMapping("/books")
-    public Iterable<Books> getAllBooks() {
-        return booksService.getAllBooks();
+    public Page<Books> getAllBooks(@RequestParam(defaultValue = "0") int pageNo,
+                                   @RequestParam(defaultValue = "10") int pageSize) {
+        return booksService.getAllBooks(pageNo, pageSize);
     }
 
-    @PutMapping("/books/{id}")
+    @GetMapping("/booksDeleted")
+    public List<Books> getBooksDeleted_atIsNull() {
+        return booksService.getBooksDeleted_atIsNull();
+    }
+
+    @PatchMapping("/books/{id}")
     @Validated
-    public Optional<Books> updateBook(@Valid @PathVariable Integer id, @RequestBody BooksRequests updateBook) {
-        return booksService.updateBookById(id, updateBook);
+    public ResponseEntity<Books> updateBook(@PathVariable Integer id, @Valid @RequestBody Books book) {
+        Books updatedBook = booksService.updateBook(id, book);
+        return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/deleteBook/{id}")
